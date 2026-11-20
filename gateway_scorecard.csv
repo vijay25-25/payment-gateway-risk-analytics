@@ -1,0 +1,6 @@
+gateway_name,transactions,success_rate_pct,failed_rate_pct,avg_response_ms,chargeback_rate_pct,mdr_revenue,effective_rate_pct,chargeback_amount,loss_to_mdr_pct
+Cashfree,13274,78.24,13.27,717.0,2.88,64450.38,1.54,124429.04,193.1
+PayU,11353,78.31,13.74,717.0,2.79,55615.47,1.54,99096.74,178.2
+Razorpay,19712,78.06,13.96,716.0,2.85,95701.33,1.53,191744.49,200.4
+Stripe,4983,77.0,14.39,725.0,2.97,23669.71,1.54,46402.1,196.0
+Unknown,498,78.92,13.05,703.0,2.69,2365.43,1.57,2954.57,124.9
