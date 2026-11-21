@@ -1,237 +1,92 @@
 # Payment Gateway Performance & Risk Analytics
 
-**A FinTech Data Analytics Portfolio Project**
+**A payments analytics portfolio project (Python completed; SQL and Power BI to follow)**
 
-## Project Overview
+## Business Problem
 
-The **Payment Gateway Performance & Risk Analytics** project focuses on analyzing synthetic payment transaction data to evaluate payment gateway performance, understand transaction failures, monitor payment risks, and assess financial performance.
+A payment business wants to know where it actually loses money: failed payments, a weak gateway or payment method, or chargebacks. This project analyses 50,000 synthetic payment transactions to find the biggest profit leak and recommend what to do about it.
 
-The objective is to transform raw transaction data into meaningful business insights that can help understand payment operations, identify performance gaps, and support data-driven business decisions.
+## Key Findings
 
-This project follows an end-to-end analytics workflow using Python, SQL, and Power BI.
+- **Chargebacks are the biggest profit leak.** Chargeback losses (Rs 464.6K) are about 1.9x the MDR fee revenue (Rs 241.8K), leaving a net loss of Rs 222.8K in Jan-Jun 2026.
+- **No segment explains payment failures.** Success rate is ~78% and stays flat across gateway (77.0-78.9%), payment method, issuer bank and device.
+- **Risk score is a useful warning signal.** Payments with risk score above 60 are ~8% of volume but ~19% of chargebacks (6.76% chargeback rate vs ~2.5% for low and medium risk).
+- **Gateways look alike.** Success rate, chargeback rate, fee rate and speed are almost identical, so re-routing traffic will not fix the problem.
 
----
+## Recommendations
 
-## Business Objectives
+1. Pilot step-up verification (e.g., OTP/3DS) for payments with risk score above 60. Track the high-band chargeback rate, with success rate as a guardrail.
+2. Review the 38 payments that were both refunded and charged back (possible double loss).
+3. Review pricing and chargeback terms, since chargeback losses are about 1.9x fee revenue.
+4. Keep a backup plan for Razorpay, which carries about 40% of fee revenue.
 
-The key business objectives of this project are:
+## Data
 
-- Evaluate payment gateway performance and transaction success rates.
-- Identify major reasons behind payment failures.
-- Compare system-side and customer/bank-side failures.
-- Analyze transaction risk scores and chargeback patterns.
-- Measure Merchant Discount Rate (MDR) fee revenue.
-- Compare MDR fee revenue with chargeback exposure.
-- Analyze settlement and refund-related performance.
-- Generate actionable business insights and recommendations.
+- **Synthetic** payment transactions dataset: 50,000 raw rows (49,820 after cleaning), 1 Jan - 30 Jun 2026.
+- Status split: Success 78.07%, Failed 13.76%, Pending 5.11%, Refunded 3.06%.
+- The data contains simulated records only. It does not represent real customers, real payments or any real company. Because it is synthetic, many segment patterns are unusually flat and may not match real-world behavior.
 
----
+## What Was Done
 
-## Dataset Information
+**Phase 1: Data Cleaning and EDA (completed)**
+- Removed 50 duplicate rows and corrupted amount outliers (placeholder values).
+- Filled missing categorical values and standardized payment method casing.
+- Explored payment status, failure reasons, payment method mix, gateway share and amount distribution.
 
-### Dataset Type: Synthetic Payment Transaction Data
+**Phase 2: Business Analysis (completed)**
+- Success rate by gateway, payment method, issuer bank, device, hour and weekday.
+- Chargeback rate (on charged payments only), chargeback value and risk-score bands.
+- MDR fee revenue, effective MDR rate and chargeback loss compared with fee revenue.
+- Gateway scorecard combining volume, success, failure, speed, chargebacks and fee revenue.
+- Executive Summary with evidence, impact and recommendations.
 
-This project uses a **synthetic payment transaction dataset** designed to simulate payment gateway operations and common business scenarios in the FinTech industry.
+**Phase 3: SQL Analysis (upcoming)**
+- The same business questions in MySQL: aggregations, CASE WHEN, joins, subqueries, CTEs and window functions.
 
-The dataset contains transaction-level information related to payments, merchants, gateways, financial metrics, risk indicators, and settlement activities.
-
-### Key Dataset Attributes
-
-| Category | Description |
-|---|---|
-| Transaction Details | Transaction ID, timestamp and user ID |
-| Merchant Information | Merchant name and merchant category |
-| Gateway Information | Gateway name and payment method |
-| Payment Details | Amount, currency, card network and issuer bank |
-| Transaction Status | Successful and failed transactions |
-| Failure Analysis | Failure reasons and response time |
-| Financial Metrics | Settled amount and MDR fee |
-| Risk Analysis | Risk score and chargeback flag |
-| Refund Information | Refund status and refund amount |
-| Settlement Details | Settlement ID, status and settlement date |
-
-### Dataset Disclaimer
-
-The dataset contains simulated information and does not represent actual customer records, real payment transactions, or confidential financial data from any payment company.
-
-All analytical findings are based on this synthetic dataset and are intended for educational and portfolio demonstration purposes.
-
----
-
-## Project Workflow & Progress
-
-### Phase 1: Data Cleaning & Exploratory Data Analysis (EDA)
-
-**Status: Completed**
-
-Key activities:
-
-- Initial data inspection and structure analysis.
-- Identification and handling of duplicate records.
-- Missing value analysis.
-- Investigation of unusual transaction amounts.
-- Data standardization and preparation.
-- Transaction amount distribution analysis.
-- Payment status and transaction pattern exploration.
-- Exploratory visualizations using Python.
-
-### Phase 2: Business Analysis
-
-**Status: Completed**
-
-Business analysis focuses on answering practical FinTech and payment industry questions.
-
-Key analysis areas:
-
-**1. Payment Gateway Performance**
-- Gateway-wise transaction performance.
-- Successful and failed transaction analysis.
-- Gateway success rate comparison.
-
-**2. Transaction Failure Analysis**
-- Failure reason distribution.
-- System-side vs Customer/Bank-side failures.
-- Failed transaction count and amount analysis.
-
-**3. Risk Score & Chargeback Analysis**
-- Risk score distribution.
-- High-risk transaction analysis.
-- Chargeback patterns and financial exposure.
-- Risk category-wise chargeback comparison.
-
-**4. MDR Fee Revenue Analysis**
-- Total MDR fee revenue.
-- Effective MDR rate.
-- Chargeback exposure compared with MDR revenue.
-
-**5. Other Payment Business Metrics**
-- Transaction performance.
-- Settlement-related analysis.
-- Refund-related analysis.
-
-### Phase 3: SQL Business Analysis
-
-**Status: Upcoming**
-
-Planned activities using MySQL:
-
-- Transaction-level analysis.
-- Gateway-wise performance comparison.
-- Merchant and payment method analysis.
-- Failure and chargeback analysis.
-- Revenue and financial performance analysis.
-- Joins, subqueries and Common Table Expressions (CTEs).
-- Window functions and advanced analytical queries.
-
-### Phase 4: Power BI Dashboard
-
-**Status: Upcoming**
-
-Planned dashboard components:
-
-- Overall payment performance KPIs.
-- Gateway performance dashboard.
-- Transaction failure analysis.
-- Risk and chargeback monitoring.
-- MDR revenue and financial metrics.
-- Interactive filters and visualizations.
-
----
-
-## Tools & Technologies
-
-| Technology | Purpose |
-|---|---|
-| Python | Data analysis and processing |
-| Pandas | Data manipulation and analysis |
-| NumPy | Numerical operations and feature creation |
-| Matplotlib | Data visualization |
-| Seaborn | Statistical data visualization |
-| JupyterLab | Interactive development environment |
-| MySQL | SQL-based business analysis (upcoming) |
-| Power BI | Interactive dashboard development (upcoming) |
-
----
+**Phase 4: Power BI Dashboard (upcoming)**
+- One-page executive dashboard based on the gateway scorecard.
 
 ## Repository Structure
 
 ```text
 payment-gateway-risk-analytics/
-│
-├── 01_eda_cleaning.ipynb
-│
-├── 02_business_analysis.ipynb
-│
-├── gateway_scorecard.csv
-│
-├── payment.csv
-│
-├── payment_cleaned.csv
-│
+├── 01_eda_cleaning.ipynb        Data cleaning and EDA
+├── 02_business_analysis.ipynb   Business analysis and Executive Summary
+├── payment.csv                  Original synthetic dataset
+├── payment_cleaned.csv          Cleaned dataset
+├── gateway_scorecard.csv        Final gateway scorecard
 └── README.md
 ```
 
-### File Descriptions
+## How to Run
 
-| File Name | Description |
+```bash
+pip install pandas numpy matplotlib seaborn jupyterlab
+jupyter lab
+```
+
+Open `01_eda_cleaning.ipynb` first, then `02_business_analysis.ipynb`. Keep the CSV files in the same folder as the notebooks.
+
+## Tools
+
+Python, Pandas, NumPy, Matplotlib, Seaborn, JupyterLab. MySQL and Power BI are planned.
+
+## Limitations
+
+- Synthetic data covering six months only.
+- MDR fee is gross, and chargeback penalty fees are not included.
+- About 1% of transactions have an Unknown gateway or issuer bank.
+- Gateway-level differences in chargeback loss rest on small samples (119-455 chargebacks per gateway) and should not be over-read.
+
+## Project Status
+
+| Phase | Status |
 |---|---|
-| `01_eda_cleaning.ipynb` | Data cleaning, preparation and exploratory data analysis |
-| `02_business_analysis.ipynb` | Business questions, KPI calculations and analytical insights |
-| `gateway_scorecard.csv` | Payment gateway performance summary |
-| `payment.csv` | Original synthetic payment transaction dataset |
-| `payment_cleaned.csv` | Cleaned payment transaction dataset |
-| `README.md` | Project documentation |
-
----
-
-## Key Business Metrics
-
-The project focuses on evaluating important payment business KPIs, including:
-
-- Total Transactions
-- Successful Transactions
-- Transaction Success Rate
-- Transaction Failure Rate
-- Failed Transaction Amount
-- Gateway-wise Performance
-- High-Risk Transaction Percentage
-- Chargeback Rate
-- Chargeback Transaction Value
-- Total MDR Fee Revenue
-- Effective MDR Rate
-- Chargeback Exposure as a Share of MDR Revenue
-
----
-
-## Business Value
-
-This project demonstrates how transaction data can be used to:
-
-- Monitor payment gateway performance.
-- Identify major sources of payment failures.
-- Understand transaction risk and chargeback exposure.
-- Evaluate payment-related fee revenue.
-- Support operational and financial decision-making.
-- Convert analytical findings into business recommendations.
-
----
-
-## Current Project Status
-
-| Project Phase | Status |
-|---|---|
-| Data Cleaning & EDA | Completed |
+| Data Cleaning and EDA | Completed |
 | Business Analysis | Completed |
 | SQL Analysis | Upcoming |
 | Power BI Dashboard | Upcoming |
-| Final Documentation | In Progress |
 
----
+## Author
 
-## Project Goal
-
-The goal of this project is to develop practical FinTech data analytics skills by solving business-oriented problems using transaction data.
-
-It demonstrates the application of data cleaning, exploratory analysis, KPI development, business analysis, and analytical problem-solving in a simulated payment gateway environment.
-
-**Project Status:** Ongoing Portfolio Project
+Vijay Rathor | BSc Mathematics | Entry-level Data Analyst
